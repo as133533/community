@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.48.138:3306/test?characterEncoding=utf8&amp;useSSL=false"
+                        userId="root"
+                        password="10jqka@123">
+        </jdbcConnection>
+
+        <!-- 如果这个开启，那么就会导致劲量把一些整型的数据库类型转换成Integral类型-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- <javaModelGenerator>元素用于定义Java模型生成器的属性。Java模型生成器将构建与自省表匹配的主键类，记录类和“按示例查询”类。此元素是<context>元素的必需子元素-->
+        <javaModelGenerator targetPackage="life.hrx.weibo.model" targetProject="src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--<sqlMapGenerator>元素用于定义SQL映射生成器的属性。SQL Map Generator为每个自省表构建MyBatis格式的SQL Map XML文件。-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--<javaClientGenerator>元素用于定义Java客户端生成器的属性。Java客户端生成器构建Java接口和类，以方便使用所生成的Java模型和XML映射文件。对于MyBatis，生成的对象采用mapper接口的形式-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="life.hrx.weibo.mapper"
+                             targetProject="src\main\java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--<table>元素用于选择数据库中用于自省的表。选定的表将导致为每个表生成以下对象：-->
+        <table tableName="user" domainObjectName="User"></table>
+        <table tableName="question" domainObjectName="Question"></table>
+        <table tableName="comment" domainObjectName="Comment"></table>
+        <table tableName="notification" domainObjectName="Notification"></table>
+    </context>
+</generatorConfiguration>

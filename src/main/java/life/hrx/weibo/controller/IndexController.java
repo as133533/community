@@ -3,10 +3,9 @@ package life.hrx.weibo.controller;
 
 import life.hrx.weibo.dto.PaginationDTO;
 import life.hrx.weibo.dto.QuestionDTO;
-import life.hrx.weibo.mapper.QuestionMapper;
-import life.hrx.weibo.model.QuestionExample;
+
 import life.hrx.weibo.service.QuestionService;
-import org.apache.ibatis.session.RowBounds;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

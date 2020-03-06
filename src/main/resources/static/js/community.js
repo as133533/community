@@ -84,7 +84,7 @@ function collapseComments(e) {
                         "class": "media-body"
                     }).append($("<h5/>", {
                         "class": "media-heading",
-                        "html": comment.user.name
+                        "html": comment.user.username
                     })).append($("<div/>", {
                         "html": comment.content
                     })).append($("<div/>", {

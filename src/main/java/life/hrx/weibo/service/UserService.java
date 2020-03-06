@@ -1,6 +1,5 @@
 package life.hrx.weibo.service;
 
-
 import life.hrx.weibo.mapper.UserMapper;
 import life.hrx.weibo.model.User;
 import life.hrx.weibo.model.UserExample;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -25,7 +23,7 @@ public class UserService {
     //通过用户登录时的名字来获取User
     public User findByName(String name) {
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andNameEqualTo(name);
+        userExample.createCriteria().andUsernameEqualTo(name);
         List<User> users = userMapper.selectByExample(userExample);
         if (users.size() ==0){
             return null;
@@ -38,7 +36,7 @@ public class UserService {
 
 
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andNameEqualTo(name);
+        userExample.createCriteria().andUsernameEqualTo(name);
         List<User> users = userMapper.selectByExample(userExample);
         boolean matches = bCryptPasswordEncoder.matches(password, users.get(0).getPassword());//验证密码正确性
         return matches;
@@ -55,12 +53,13 @@ public class UserService {
         return true;
     }
 
-    public void hashPassowrd(String username,String email,String password) throws NoSuchAlgorithmException {
+    public void hashPassowrd(String username,String email,String password,String phone) throws NoSuchAlgorithmException {
         String encode = bCryptPasswordEncoder.encode(password);
         User user=new User();
         user.setEmail(email);
-        user.setName(username);
+        user.setUsername(username);
         user.setPassword(encode);
+        user.setPhone(phone);
         setInfo(user);
         userMapper.insert(user);
     }
@@ -81,6 +80,6 @@ public class UserService {
         }
         user.setAvatarUrl(String.format("https://www.gravatar.com/avatar/%s?d=identicon",buffer.toString()));
         user.setGmtCreate(System.currentTimeMillis());
-        user.setToken(UUID.randomUUID().toString());
+
     }
 }

@@ -18,20 +18,24 @@
 <div class="lmain">
     <form action="/register" method="post">
         <div class="form-group">
-            <label for="name">账号</label>
-            <input type="text" class="form-control" id="name" placeholder="username" name="name" th:value="${name}">
+            <label for="username">账号</label>
+            <input type="text" class="form-control" id="username" placeholder="请输入用户名" name="username" th:value="${username}">
         </div>
         <div class="form-group">
-            <label for="name">邮箱</label>
-            <input type="text" class="form-control" id="email" placeholder="@email" name="email" th:value="${email}">
+            <label for="email">邮箱</label>
+            <input type="text" class="form-control" id="email" placeholder="请输入邮箱" name="email" th:value="${email}">
+        </div>
+        <div class="form-group">
+            <label for="phone">电话号码</label>
+            <input type="text" class="form-control" id="phone" placeholder="请输入电话号码" name="phone" th:value="${phone}">
         </div>
         <div class="form-group">
             <label for="password">密码</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+            <input type="password" class="form-control" id="password" placeholder="请输入密码" name="password">
         </div>
         <div class="form-group">
-            <label for="name">确认密码</label>
-            <input type="text" class="form-control" id="password1" placeholder="Confirm Password" name="password1" >
+            <label for="password1">确认密码</label>
+            <input type="password" class="form-control" id="password1" placeholder="确认密码" name="password1" >
         </div>
 
         <hr style="margin-bottom: 10px;margin-top: 10px;">

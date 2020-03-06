@@ -1,5 +1,6 @@
 package life.hrx.weibo.controller;
 
+import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.NotificationDTO;
 import life.hrx.weibo.enums.NotificationTypeEnum;
 import life.hrx.weibo.exception.CustomizeErrorCode;
@@ -7,6 +8,7 @@ import life.hrx.weibo.exception.CustomizeException;
 import life.hrx.weibo.model.User;
 import life.hrx.weibo.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +24,17 @@ public class NotificationController {
 
 
     @RequestMapping(value = "/notification/{id}",method = RequestMethod.GET)
-    public String notification(@PathVariable("id") Long id, HttpServletRequest request){
-        User user = (User)request.getSession().getAttribute("user");
+    public String notification(@PathVariable("id") Long id, Authentication authentication){
+//        User user = (User)request.getSession().getAttribute("user");
+//
+//        if (user == null){
+//            throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
+//        }
 
-        if (user == null){
-            throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
-        }
-
+        Object principal = authentication.getPrincipal();
+        MyUserDetails myUserDetails = (MyUserDetails) principal;
         //将该问题的status标记为已读，然后跳转到问题页
-        NotificationDTO notificationDTO = notificationService.read(id, user);
+        NotificationDTO notificationDTO = notificationService.read(id, myUserDetails);
 
         if (notificationDTO.getType()== NotificationTypeEnum.QUESTION.getType() || notificationDTO.getType()==NotificationTypeEnum.COMMENT.getType()){
             return "redirect:/question/"+notificationDTO.getOuterid();

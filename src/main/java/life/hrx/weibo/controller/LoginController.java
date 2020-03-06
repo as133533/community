@@ -23,40 +23,41 @@ public class LoginController {
 
         return "login";
     }
-    //登录的post视图
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(@RequestParam(value = "name",required = false) String name,
-                        @RequestParam(value = "password",required =false ) String password,
-                        Model model,
-                        HttpServletRequest request,
-                        HttpServletResponse response
-                        ){
-        model.addAttribute("name",name);
 
-        if (StringUtils.isBlank(name)){
-            model.addAttribute("error","用户名不能为空");
-            return "login";
-        }
-        if (StringUtils.isBlank(password)){
-            model.addAttribute("error","密码不能为空");
-            return "login";
-        }
-        User user = userService.findByName(name);
-        if (user == null){
-            model.addAttribute("error","用户不存在，请检查用户名");
-            return "login";
-        }
-        boolean authPassword = userService.isAuthPassword(name, password);
-        if (!authPassword){
-            model.addAttribute("error","密码错误，请重新输入");
-            return "login";
-        }
-
-        //写cookie和session
-        response.addCookie(new Cookie("token",user.getToken()));
-        request.getSession().setAttribute("user",user);
-        return "redirect:/";
-    }
+//    //登录的post视图
+//    @RequestMapping(value = "/login",method = RequestMethod.POST)
+//    public String login(@RequestParam(value = "name",required = false) String name,
+//                        @RequestParam(value = "password",required =false ) String password,
+//                        Model model,
+//                        HttpServletRequest request,
+//                        HttpServletResponse response
+//                        ){
+//        model.addAttribute("name",name);
+//
+//        if (StringUtils.isBlank(name)){
+//            model.addAttribute("error","用户名不能为空");
+//            return "login";
+//        }
+//        if (StringUtils.isBlank(password)){
+//            model.addAttribute("error","密码不能为空");
+//            return "login";
+//        }
+//        User user = userService.findByName(name);
+//        if (user == null){
+//            model.addAttribute("error","用户不存在，请检查用户名");
+//            return "login";
+//        }
+//        boolean authPassword = userService.isAuthPassword(name, password);
+//        if (!authPassword){
+//            model.addAttribute("error","密码错误，请重新输入");
+//            return "login";
+//        }
+//
+//        //写cookie和session
+////        response.addCookie(new Cookie("token",user.getToken()));
+////        request.getSession().setAttribute("user",user);
+//        return "redirect:/";
+//    }
 
 
 }

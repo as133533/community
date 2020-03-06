@@ -1,6 +1,7 @@
 package life.hrx.weibo.service;
 
 
+import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.CommentDTO;
 import life.hrx.weibo.dto.NotificationDTO;
 import life.hrx.weibo.dto.PaginationDTO;
@@ -69,19 +70,19 @@ public class NotificationService {
         return paginationDTO;
     }
 
-    public NotificationDTO read(Long id, User user) {
+    public NotificationDTO read(Long id, MyUserDetails user) {
         Notification notification = notificationMapper.selectByPrimaryKey(id);
         if (notification==null){
             throw new CustomizeException(CustomizeErrorCode.NOTIFICATION_NOT_FOUND);
         }
-        if (notification.getReceiver()!=user.getId()){
+        if (!Objects.equals(notification.getReceiver(), user.getId())){
             throw new CustomizeException(CustomizeErrorCode.READ_NOTIFICATION_FAIL);
         }
         notification.setStatus(NotificationStatusEnum.READ.getStatus());
         notificationMapper.updateByPrimaryKey(notification);
         NotificationDTO notificationDTO = new NotificationDTO();
         BeanUtils.copyProperties(notification,notificationDTO);
-        if (notificationDTO.getType()==NotificationTypeEnum.QUESTION.getType()){
+        if (Objects.equals(notificationDTO.getType(), NotificationTypeEnum.QUESTION.getType())){
             notificationDTO.setTypeName("回复了问题");
         }else {
             notificationDTO.setTypeName("回复了评论");

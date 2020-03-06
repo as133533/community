@@ -4,6 +4,7 @@ import life.hrx.weibo.dto.QuestionDTO;
 import life.hrx.weibo.enums.CommentTypeEnum;
 import life.hrx.weibo.service.CommentService;
 import life.hrx.weibo.service.QuestionService;
+import life.hrx.weibo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class QuestionController {
 
     @Autowired
     private CommentService commentService;
+
 
     @RequestMapping(value = "/question/{id}",method = RequestMethod.GET)
     public String question(Model model, @PathVariable("id") Long id){

@@ -1,4 +1,5 @@
 package life.hrx.weibo.service;
+import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.CommentDTO;
 import life.hrx.weibo.dto.NotificationDTO;
 import life.hrx.weibo.dto.PaginationDTO;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,20 +30,21 @@ public class CommentService {
     private QuestionExtMapper questionExtMapper;
     @Autowired(required = false)
     private CommentExtMapper commentExtMapper;
-    @Autowired
+
+    @Autowired(required = false)
     private UserMapper userMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private NotificationMapper notificationMapper;
 
-    public void Insert_Comment(Comment comment, User user) {
+    public void Insert_Comment(Comment comment, MyUserDetails user) {
         if (comment.getParentId()==null || comment.getParentId()==0){
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
         if (comment.getType()==null || comment.getType()==0){
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
-        if (comment.getType()== CommentTypeEnum.QUESTION.getType()){//表示该评论是用来回复问题的
+        if (Objects.equals(comment.getType(), CommentTypeEnum.QUESTION.getType())){//表示该评论是用来回复问题的
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
             if (question==null){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -50,7 +53,7 @@ public class CommentService {
             commentMapper.insert(comment);//添加评论
             question.setCommentCount(1);//这个只是用来限制每次增加的数量
             questionExtMapper.incCommentCount(question);//增加评论数
-            if (question.getCreator()!=user.getId()) {//如果发起问题的人不是当前登录的人才发起通知
+            if (!Objects.equals(question.getCreator(), user.getId())) {//如果发起问题的人不是当前登录的人才发起通知
                 createNotify(question.getId(), NotificationTypeEnum.QUESTION.getType(), user, question.getCreator(), question.getTitle());
             }
 
@@ -66,7 +69,7 @@ public class CommentService {
             commentMapper.insert(comment);
             prtcomment.setCommentCount(1);//这个只是用来表示单次增加的数量
             commentExtMapper.incCommentCount(prtcomment);
-            if (prtcomment.getCommentator()!=user.getId()) {//如果发起评论的人不是当前登录的人才发起通知
+            if (!Objects.equals(prtcomment.getCommentator(), user.getId())) {//如果发起评论的人不是当前登录的人才发起通知
                 createNotify(question.getId(), NotificationTypeEnum.COMMENT.getType(), user, prtcomment.getCommentator(), question.getTitle());
             }
         }
@@ -90,11 +93,11 @@ public class CommentService {
         return commentDTOS;
     }
 
-    public void createNotify(Long id,Integer type,User user,Long receiverId,String outerTitle){
+    public void createNotify(Long id,Integer type,MyUserDetails user,Long receiverId,String outerTitle){
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setNotifier(user.getId());//发起通知人id
-        notification.setNotifierName(user.getName());
+        notification.setNotifierName(user.getUsername());
         notification.setOuterid(id);//通知类型的id，是questionId
         notification.setReceiver(receiverId);//接受人id
         notification.setOuterTitle(outerTitle);//评论的title

@@ -1,18 +1,15 @@
 package life.hrx.weibo.auth.myuserdetails;
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 
 /**
  * 该类类似于登录用户的model,这里存放着用户信息和权限，必须接口自UserDetails，否则spring security无法做自定义的认证,这个会被存在session中
  */
 
-@Component
+
 public class MyUserDetails  implements UserDetails {
     private Long id; //数据库中用户id主键
     private String password;  //密码

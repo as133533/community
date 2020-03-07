@@ -5,7 +5,7 @@ import life.hrx.weibo.auth.myuserdetails.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,13 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
+
 
 @Configuration
 @EnableWebSecurity
@@ -57,7 +55,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
         .and()
             .authorizeRequests()
-            .antMatchers("/login","/","/register","/question/**","/comment/**").permitAll()
+            .antMatchers("/login","/","/register","/question/**","/error").permitAll()
+            .antMatchers(HttpMethod.GET,"/comment/**").permitAll()
             .anyRequest().authenticated()//任何请求都需要被加上authenticated权限认证请求头
         .and()
             .sessionManagement()

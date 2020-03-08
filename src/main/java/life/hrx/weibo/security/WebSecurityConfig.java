@@ -1,6 +1,9 @@
 package life.hrx.weibo.security;
 
 
+import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationFailureHandler;
+import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationSuccessHandler;
+import life.hrx.weibo.auth.imagecode.CaptchaCodeFilter;
 import life.hrx.weibo.auth.myuserdetails.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -31,6 +35,15 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+
+    @Autowired
+    private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+
+    @Autowired
+    private CaptchaCodeFilter captchaCodeFilter;
+
     /**
      * web访问权限主要配置方法
      * @param http
@@ -39,7 +52,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
+        http.addFilterBefore(captchaCodeFilter, UsernamePasswordAuthenticationFilter.class)//将验证码过滤器放到用户密码验证过滤器之前
             .logout()//开启logout功能，不需要编写controller,会去做清除session和删除remember-me数据库上的和游览器上的存储都会被删除
             .logoutUrl("/logout") //默认就为这个链接，不定义也行
             .deleteCookies("JSESSIONID")//自定义还需要删除的cookie名称
@@ -47,15 +60,17 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         .and()
             .csrf().disable().formLogin()
             .loginPage("/login")
-            .usernameParameter("username")
+            .usernameParameter("username") //如果这个配置不去定义，默认就是username， 下同
             .passwordParameter("password")
             .loginProcessingUrl("/login")
-            .defaultSuccessUrl("/")
-            .failureUrl("/login")
+            //.defaultSuccessUrl("/") //不要再使用默认的登录成功和登录失败策略，否则自定义的策略会不生效
+//            .failureUrl("/login.fail")
+            .successHandler(myAuthenticationSuccessHandler)
+            .failureHandler(myAuthenticationFailureHandler)
 
         .and()
             .authorizeRequests()
-            .antMatchers("/login","/","/register","/question/**","/error").permitAll()
+            .antMatchers("/login","/","/register","/question/**","/error","/login.fail","/kaptcha").permitAll()
             .antMatchers(HttpMethod.GET,"/comment/**").permitAll()
             .anyRequest().authenticated()//任何请求都需要被加上authenticated权限认证请求头
         .and()

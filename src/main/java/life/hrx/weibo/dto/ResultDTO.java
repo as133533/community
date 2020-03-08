@@ -1,6 +1,12 @@
 package life.hrx.weibo.dto;
 import life.hrx.weibo.exception.CustomizeErrorCode;
 import lombok.Data;
+
+
+/**
+ * 传递给前端的json数据对象，是一个结果对象
+ * @param <T>
+ */
 @Data
 public class ResultDTO<T> {
     private Integer code;
@@ -24,6 +30,12 @@ public class ResultDTO<T> {
         ResultDTO resultDTO=new ResultDTO();
         resultDTO.setCode(noLogin.getCode());
         resultDTO.setMessage(noLogin.getMessage());
+        return resultDTO;
+    }
+    public static ResultDTO errorOf(String message) {
+        ResultDTO resultDTO=new ResultDTO();
+        resultDTO.setCode(5000);
+        resultDTO.setMessage(message);
         return resultDTO;
     }
 }

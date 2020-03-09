@@ -42,10 +42,10 @@ public class UserService {
         return matches;
     }
 
-    //判断邮箱是否存在，存在返回true,错误返回false
+    //判断邮箱是否存在，存在返回true,否则返回false
     public boolean findByEmail(String email) {
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andEmailEqualTo("email");
+        userExample.createCriteria().andEmailEqualTo(email);
         List<User> users = userMapper.selectByExample(userExample);
         if (users.size()==0){
             return false;
@@ -81,5 +81,16 @@ public class UserService {
         user.setAvatarUrl(String.format("https://www.gravatar.com/avatar/%s?d=identicon",buffer.toString()));
         user.setGmtCreate(System.currentTimeMillis());
 
+    }
+
+    //查找是否电话被注册,如果被注册返回true,如果没有被注册返回false
+    public boolean findByPhone(String checkName) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andPhoneEqualTo(checkName);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users.size()==0){
+            return false;
+        }
+        return true;
     }
 }

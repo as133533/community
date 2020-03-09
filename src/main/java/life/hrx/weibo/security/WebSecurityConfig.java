@@ -13,14 +13,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
 import javax.sql.DataSource;
 
 
@@ -65,12 +63,12 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
             .loginProcessingUrl("/login")
             //.defaultSuccessUrl("/") //不要再使用默认的登录成功和登录失败策略，否则自定义的策略会不生效
 //            .failureUrl("/login.fail")
-            .successHandler(myAuthenticationSuccessHandler)
-            .failureHandler(myAuthenticationFailureHandler)
+            .successHandler(myAuthenticationSuccessHandler) //自定义登录成功后的策略
+            .failureHandler(myAuthenticationFailureHandler) //自定义登录失败后的策略
 
         .and()
             .authorizeRequests()
-            .antMatchers("/login","/","/register","/question/**","/error","/login.fail","/kaptcha").permitAll()
+            .antMatchers("/login","/","/register","/question/**","/error","/login.fail","/kaptcha","/registercheck").permitAll()
             .antMatchers(HttpMethod.GET,"/comment/**").permitAll()
             .anyRequest().authenticated()//任何请求都需要被加上authenticated权限认证请求头
         .and()

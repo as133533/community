@@ -23,16 +23,16 @@ public class LoginController {
         return "login";
     }
 
-    /**
-     * 登录失败提示信息
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/login.fail",method = RequestMethod.GET)
-    public String loginFail(Model model){
-        model.addAttribute("loginMessage","用户名不存在或密码不正确");
-        return "login";
-    }
+//    /**
+//     * 登录失败提示信息
+//     * @param model
+//     * @return
+//     */
+//    @RequestMapping(value = "/login.fail",method = RequestMethod.GET)
+//    public String loginFail(Model model){
+//        model.addAttribute("loginMessage","用户名不存在或密码不正确");
+//        return "login";
+//    }
 
 
 //    //登录的post视图

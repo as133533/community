@@ -1,8 +1,3 @@
-
-
-
-
-
 function usernameCheck(){
 
     var username = $("#username").val();
@@ -68,7 +63,7 @@ $('#login-div').bind('keyup', function(event) {
 
     if (code === 13) {
         //回车执行登录
-        loginCheck();
+        loginAndCheck();
     }
 
 });

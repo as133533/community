@@ -1,10 +1,9 @@
 package life.hrx.weibo.security;
-
-
 import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationFailureHandler;
 import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationSuccessHandler;
 import life.hrx.weibo.auth.imagecode.CaptchaCodeFilter;
 import life.hrx.weibo.auth.myuserdetails.MyUserDetailsService;
+import life.hrx.weibo.auth.smscode.SmsCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +41,9 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     private CaptchaCodeFilter captchaCodeFilter;
 
+    @Autowired
+    private SmsCodeSecurityConfig smsCodeSecurityConfig;
+
     /**
      * web访问权限主要配置方法
      * @param http
@@ -65,10 +67,12 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 //            .failureUrl("/login.fail")
             .successHandler(myAuthenticationSuccessHandler) //自定义登录成功后的策略
             .failureHandler(myAuthenticationFailureHandler) //自定义登录失败后的策略
+        .and()
+            .apply(smsCodeSecurityConfig) //将短信登录方式的配置加入到正式配置中
 
         .and()
             .authorizeRequests()
-            .antMatchers("/login","/","/register","/question/**","/error","/login.fail","/kaptcha","/registercheck").permitAll()
+            .antMatchers("/login","/","/register","/question/**","/error","/kaptcha","/registercheck","/smslogin","/smscode").permitAll()
             .antMatchers(HttpMethod.GET,"/comment/**").permitAll()
             .anyRequest().authenticated()//任何请求都需要被加上authenticated权限认证请求头
         .and()
@@ -113,7 +117,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**","/fonts/**","/images/**","/js/**");
+        web.ignoring().antMatchers("/css/**","/fonts/**","/images/**","/js/**","/layui/**");
     }
 
     /**

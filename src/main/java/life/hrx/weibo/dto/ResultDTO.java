@@ -32,11 +32,13 @@ public class ResultDTO<T> {
         resultDTO.setMessage(noLogin.getMessage());
         return resultDTO;
     }
-    public static ResultDTO errorOf(String message) {
+    public static ResultDTO errorOf(Integer code,String message) {
         ResultDTO resultDTO=new ResultDTO();
-        resultDTO.setCode(5000);
+        resultDTO.setCode(code);
         resultDTO.setMessage(message);
         return resultDTO;
     }
+
+
 }
 

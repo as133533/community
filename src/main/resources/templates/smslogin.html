@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>感享-登录</title>
+
+
+    <link href="/layui/css/layui.css" rel="stylesheet" type="text/css">
+    <link href="/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/fontsgoogle.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/community.css">
+
+
+
+</head>
+
+<body class="bg-gradient-primary">
+
+<div class="container " id="login-div">
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">欢迎回来！</h1>
+                                </div>
+                                <form class="user" id="loginForm" action="/smslogin" method="post">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user" id="phone" name="phone" aria-describedby="emailHelp" placeholder="手机号码" onblur="phoneCheck()" >
+                                        <span id="phoneTip" class="tips"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="text" class="form-control-byself form-control-user" id="smsCode" name="smsCode" placeholder="输入验证码" onblur="smsCodeCheck()">
+                                        <span><input type="button" onclick="getSmsCode()" class="layui-btn layui-btn-radius layui-btn-normal" id="sms-btn" value="发送短信" style="width: 30%"></span>
+                                        <span id="smsCodeTip" class="tips"></span>
+
+                                    </div>
+
+                                    <span id="loginError" class="tips" ></span>
+                                    <div class="text-right">
+                                        <a href="/login" class="small">
+                                            换个登录方式(用户名密码登录)
+                                        </a>
+                                    </div>
+                                    <input type="button" onclick="smsLoginAndCheck()" class="btn btn-primary btn-user btn-block" id="login-btn" value="短信登录">
+                                    <hr>
+
+                                    <h5 class="text-center small" style="margin-bottom: 0">第三方登录(维护中)</h5>
+
+                                    <a href="index.html" class="btn btn-phone btn-user btn-block">
+                                        微信登录
+                                    </a>
+                                    <a href="index.html" class="btn btn-wechat btn-user btn-block">
+                                        QQ登录
+                                    </a>
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                    <a class="small" href="#">忘记密码?</a>
+                                </div>
+                                <div class="text-center">
+                                    <a class="small" href="/register">新用户注册</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+<script src="/js/jquery.easing.min.js"></script>
+
+<script src="/js/sb-admin-2.min.js"></script>
+
+<script src="/js/smslogin.js"></script>
+<script src="/js/bootstrap.min.js" type="application/javascript"></script>
+<script src="/layui/layui.js"></script>
+
+</html>

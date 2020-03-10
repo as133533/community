@@ -33,7 +33,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         }
         if (loginType.equalsIgnoreCase("JSON")){ //下面是发送json格式的响应
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(ResultDTO.errorOf(errorMsg)));
+            response.getWriter().write(objectMapper.writeValueAsString(ResultDTO.errorOf(5000,errorMsg)));
         }else{//下面是发送html的响应
             response.setContentType("text/html;charset=UTF-8");
             super.onAuthenticationFailure(request, response, exception);

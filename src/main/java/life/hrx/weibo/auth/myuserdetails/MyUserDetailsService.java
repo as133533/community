@@ -1,4 +1,5 @@
 package life.hrx.weibo.auth.myuserdetails;
+import life.hrx.weibo.mapper.UserExtMapper;
 import life.hrx.weibo.mapper.UserMapper;
 import life.hrx.weibo.model.User;
 import life.hrx.weibo.model.UserExample;
@@ -19,7 +20,7 @@ import java.util.List;
 public class MyUserDetailsService  implements UserDetailsService {
 
     @Autowired(required = false)
-    private UserMapper userMapper;
+    private UserExtMapper userExtMapper;
 
     @Autowired
     private NotificationService notificationService;
@@ -32,15 +33,14 @@ public class MyUserDetailsService  implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andUsernameEqualTo(username);
-        List<User> users = userMapper.selectByExample(userExample);//找到该username对应的用户
+
+        List<User> users = userExtMapper.selectByUsernameOrPhone(username);
         MyUserDetails myUserDetails = new MyUserDetails();
-        BeanUtils.copyProperties(users.get(0),myUserDetails);
-
-        Long unreadcount = notificationService.unreadcount(myUserDetails.getId());
-        myUserDetails.setUnreadCount(unreadcount);
-
+        if (users.get(0)!=null){
+            BeanUtils.copyProperties(users.get(0),myUserDetails);
+            Long unreadcount = notificationService.unreadcount(myUserDetails.getId());
+            myUserDetails.setUnreadCount(unreadcount);
+        }
         return myUserDetails;
 
     }

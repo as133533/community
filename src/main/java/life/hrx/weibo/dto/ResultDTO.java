@@ -39,6 +39,14 @@ public class ResultDTO<T> {
         return resultDTO;
     }
 
+    public static <T> ResultDTO errorOf(CustomizeErrorCode noLogin,T data) {
+        ResultDTO resultDTO=new ResultDTO();
+        resultDTO.setCode(noLogin.getCode());
+        resultDTO.setMessage(noLogin.getMessage());
+        resultDTO.setData(data);
+        return resultDTO;
+    }
+
 
 }
 

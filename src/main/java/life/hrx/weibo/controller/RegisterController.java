@@ -43,7 +43,7 @@ public class RegisterController {
                 return 0;
             }
         }else if (registerCheckDTO.getType()==2){
-            if (!userService.findByEmail(registerCheckDTO.getCheckName())){
+            if (userService.findByEmail(registerCheckDTO.getCheckName())==null ){
                 return 0;
             }
         }
@@ -118,8 +118,8 @@ public class RegisterController {
             model.addAttribute("userMsg","用户名已经被注册，请重新填写用户名");
             return "register";
         }
-        boolean byEmail = userService.findByEmail(email);
-        if (byEmail){
+
+        if (userService.findByEmail(email) != null){
             model.addAttribute("emailMsg","该邮箱已被注册，请换一个邮箱");
             return "register";
         }

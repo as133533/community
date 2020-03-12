@@ -43,14 +43,14 @@ public class UserService {
     }
 
     //判断邮箱是否存在，存在返回true,否则返回false
-    public boolean findByEmail(String email) {
+    public User findByEmail(String email) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andEmailEqualTo(email);
         List<User> users = userMapper.selectByExample(userExample);
         if (users.size()==0){
-            return false;
+            return null;
         }
-        return true;
+        return users.get(0);
     }
 
     public void hashPassowrd(String username,String email,String password,String phone) throws NoSuchAlgorithmException {
@@ -92,5 +92,24 @@ public class UserService {
             return false;
         }
         return true;
+    }
+
+    public boolean findById(Long id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        return user != null;
+    }
+
+    /**
+     * 重置用户密码
+     * @param userId
+     * @param password
+     */
+    public void resetPasswordByUserId(Long userId,String password) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        String encode = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encode);
+        userMapper.updateByPrimaryKey(user);
+
+
     }
 }

@@ -58,22 +58,12 @@ function getSmsCode() {
             url: "/smscode",
             data: {
                 "phone": phone
-            },
-            success: function (json) {
-                if(json.code==200){
-                    var smsBtn=$("#sms-btn");
-                    smsBtn.addClass("layui-btn-disabled");
-                    timeClick(smsBtn);
-
-                }else{
-                    alert(json.message)
-                }
-            },
-            error: function (e) {
-                console.log(e.responseText);
             }
-        });
 
+        });
+        var smsBtn=$("#sms-btn");
+        smsBtn.addClass("layui-btn-disabled");
+        timeClick(smsBtn);
 
     }else{
         return false;
@@ -98,7 +88,6 @@ function smsLoginAndCheck() {
                 "smsCode":smsCode,
             },
             success:function (json) {
-                console.log(json)
                 if (json.code === 200){
                     location.href='/'; //会在后端写入将要跳转的链接
 

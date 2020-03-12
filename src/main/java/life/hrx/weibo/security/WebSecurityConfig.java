@@ -72,7 +72,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
         .and()
             .authorizeRequests()
-            .antMatchers("/login","/","/register","/question/**","/error","/kaptcha","/registercheck","/smslogin","/smscode").permitAll()
+            .antMatchers("/login","/","/register","/question/**","/error","/kaptcha","/registercheck","/smslogin","/smscode","/resetemail","/resetpassword/**").permitAll()
             .antMatchers(HttpMethod.GET,"/comment/**").permitAll()
             .anyRequest().authenticated()//任何请求都需要被加上authenticated权限认证请求头
         .and()

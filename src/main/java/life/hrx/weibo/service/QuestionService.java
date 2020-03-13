@@ -1,7 +1,8 @@
 package life.hrx.weibo.service;
-import life.hrx.weibo.dto.NotificationDTO;
+
 import life.hrx.weibo.dto.PaginationDTO;
 import life.hrx.weibo.dto.QuestionDTO;
+import life.hrx.weibo.dto.QuestionQueryDTO;
 import life.hrx.weibo.exception.CustomizeErrorCode;
 import life.hrx.weibo.exception.CustomizeException;
 import life.hrx.weibo.mapper.QuestionExtMapper;
@@ -13,8 +14,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,11 +56,19 @@ public class QuestionService {
 
 
     //通过前端传递的的page和size参数得到paginationDTO
-    public PaginationDTO<QuestionDTO> pagination_by_question(Integer page, Integer size) {
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("`gmt_create` DESC");
+    public PaginationDTO<QuestionDTO> pagination_by_question(String search,String tag,Integer page, Integer size) {
 
-        return questionDTOPaginationDTO(page, size, questionExample);
+        if (StringUtils.isNotBlank(search)){
+            String[] tags = StringUtils.split(search, " ");
+            search= Arrays.stream(tags).collect(Collectors.joining("|")); //用户输入的Search替换成用|分割
+        }
+
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setTag(tag);
+        return questionDTOPaginationDTO(page, size, questionQueryDTO);
     }
 
     //个人问题分页
@@ -73,12 +82,25 @@ public class QuestionService {
 
 
     //问题分页公共方法
-    private PaginationDTO<QuestionDTO> questionDTOPaginationDTO(Integer page, Integer size, QuestionExample questionExample) {
+    private PaginationDTO<QuestionDTO> questionDTOPaginationDTO(Integer page, Integer size, Object questionExample) {
         Integer offset = page < 0 ? 0 : (page - 1) * size;//计算offset
-        Integer Count = (int) questionMapper.countByExample(questionExample);//全部的信息数
+        Integer Count=0;
+        List<Question> questions=new ArrayList<>();
+        if (questionExample instanceof  QuestionExample){ //如果传进来的参数是QuestExample类型的。
+            //全部的信息数
+            Count = (int) questionMapper.countByExample((QuestionExample) questionExample);
+            //当前页要显示的信息
+             questions = questionMapper.selectByExampleWithBLOBsWithRowbounds((QuestionExample)questionExample, new RowBounds(offset, size));
 
-        //当前页要显示的信息
-        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));
+
+        }else if (questionExample instanceof QuestionQueryDTO) { //如果传进来的参数是QuestionQueryDTO类型的，那么说明是要查找问题
+            ((QuestionQueryDTO) questionExample).setOffset(offset);
+            Count = questionExtMapper.countBySearch((QuestionQueryDTO) questionExample);
+            questions = questionExtMapper.selectBySearch((QuestionQueryDTO) questionExample);
+        }
+
+
+
         Integer totalCount;//计算总页数
         if (Count % size == 0) {
             totalCount = Count / size;
@@ -94,7 +116,7 @@ public class QuestionService {
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             return questionDTO;
-        }).collect(Collectors.toList());//让questions列表中的每一个都变成已经设置号的questionDTO返回
+        }).collect(Collectors.toList());//让questions列表中的每一个都变成已经设置好的questionDTO返回
 
         paginationDTO.setData(questionDTOS);
 

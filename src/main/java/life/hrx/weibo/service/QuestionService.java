@@ -149,6 +149,15 @@ public class QuestionService {
 
         return questionDTOS;
     }
+    public void incView(Long id){
+        Question question = new Question();
+        question.setId(id);
+        //每次增加的数量
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
+
+    }
+
 }
 
 

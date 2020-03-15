@@ -155,6 +155,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
             </plugin>
 
             <!--            mabatis-generator的插件，实现mybatis的xml模式-->

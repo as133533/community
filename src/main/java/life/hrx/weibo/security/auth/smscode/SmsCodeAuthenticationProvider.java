@@ -1,4 +1,4 @@
-package life.hrx.weibo.auth.smscode;
+package life.hrx.weibo.security.auth.smscode;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;

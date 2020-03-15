@@ -1,8 +1,6 @@
-package life.hrx.weibo.auth.myuserdetails;
+package life.hrx.weibo.security.auth.myuserdetails;
 import life.hrx.weibo.mapper.UserExtMapper;
-import life.hrx.weibo.mapper.UserMapper;
 import life.hrx.weibo.model.User;
-import life.hrx.weibo.model.UserExample;
 import life.hrx.weibo.service.NotificationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

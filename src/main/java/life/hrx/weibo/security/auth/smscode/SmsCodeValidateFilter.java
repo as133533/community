@@ -1,6 +1,6 @@
-package life.hrx.weibo.auth.smscode;
+package life.hrx.weibo.security.auth.smscode;
 
-import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationFailureHandler;
+import life.hrx.weibo.security.auth.authenticationhandler.MyAuthenticationFailureHandler;
 import life.hrx.weibo.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package life.hrx.weibo.auth.authenticationhandler;
+package life.hrx.weibo.security.auth.authenticationhandler;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

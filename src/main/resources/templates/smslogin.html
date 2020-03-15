@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>感享-登录</title>
+    <title>短信验证登陆</title>
 
 
     <link href="/layui/css/layui.css" rel="stylesheet" type="text/css">
@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary myself-body">
 
 <div class="container " id="login-div">
 
@@ -46,7 +46,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="text" class="form-control-byself form-control-user" id="smsCode" name="smsCode" placeholder="输入验证码" onblur="smsCodeCheck()">
+                                        <input type="text" class="form-control form-control-user change-form-control" id="smsCode" name="smsCode" placeholder="输入验证码" onblur="smsCodeCheck()" >
                                         <span><input type="button" onclick="getSmsCode()" class="layui-btn layui-btn-radius layui-btn-normal" id="sms-btn" value="发送短信" style="width: 30%"></span>
                                         <span id="smsCodeTip" class="tips"></span>
 

@@ -1,4 +1,4 @@
-package life.hrx.weibo.auth.myuserdetails;
+package life.hrx.weibo.security.auth.myuserdetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,5 +1,5 @@
 package life.hrx.weibo.controller;
-import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.CommentCreateDTO;
 import life.hrx.weibo.dto.CommentDTO;
 import life.hrx.weibo.dto.ResultDTO;

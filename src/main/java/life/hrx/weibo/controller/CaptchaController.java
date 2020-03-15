@@ -1,7 +1,7 @@
 package life.hrx.weibo.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import life.hrx.weibo.auth.imagecode.CaptchaImageCode;
+import life.hrx.weibo.security.auth.imagecode.CaptchaImageCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

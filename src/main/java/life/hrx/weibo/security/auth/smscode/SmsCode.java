@@ -1,4 +1,4 @@
-package life.hrx.weibo.auth.smscode;
+package life.hrx.weibo.security.auth.smscode;
 
 import java.time.LocalDateTime;
 

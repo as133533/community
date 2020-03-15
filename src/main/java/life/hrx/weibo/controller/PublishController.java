@@ -1,8 +1,7 @@
 package life.hrx.weibo.controller;
-import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.cache.TagCache;
 import life.hrx.weibo.dto.QuestionDTO;
-import life.hrx.weibo.mapper.QuestionMapper;
 import life.hrx.weibo.model.Question;
 import life.hrx.weibo.service.QuestionService;
 import org.apache.commons.lang3.StringUtils;

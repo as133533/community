@@ -1,13 +1,10 @@
 package life.hrx.weibo.controller;
 
 
-import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.NotificationDTO;
 import life.hrx.weibo.dto.PaginationDTO;
 import life.hrx.weibo.dto.QuestionDTO;
-import life.hrx.weibo.exception.CustomizeErrorCode;
-import life.hrx.weibo.exception.CustomizeException;
-import life.hrx.weibo.model.User;
 import life.hrx.weibo.service.NotificationService;
 import life.hrx.weibo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 //用户信息视图，包括我的问题，我的通知页面等等
 @Controller

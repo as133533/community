@@ -1,9 +1,6 @@
 package life.hrx.weibo.service;
-import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.CommentDTO;
-import life.hrx.weibo.dto.NotificationDTO;
-import life.hrx.weibo.dto.PaginationDTO;
-import life.hrx.weibo.dto.QuestionDTO;
 import life.hrx.weibo.enums.CommentTypeEnum;
 import life.hrx.weibo.enums.NotificationStatusEnum;
 import life.hrx.weibo.enums.NotificationTypeEnum;
@@ -11,7 +8,6 @@ import life.hrx.weibo.exception.CustomizeErrorCode;
 import life.hrx.weibo.exception.CustomizeException;
 import life.hrx.weibo.mapper.*;
 import life.hrx.weibo.model.*;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

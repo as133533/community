@@ -1,8 +1,7 @@
 package life.hrx.weibo.service;
 
 
-import life.hrx.weibo.auth.myuserdetails.MyUserDetails;
-import life.hrx.weibo.dto.CommentDTO;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.NotificationDTO;
 import life.hrx.weibo.dto.PaginationDTO;
 import life.hrx.weibo.enums.NotificationStatusEnum;

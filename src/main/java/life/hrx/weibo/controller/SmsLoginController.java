@@ -1,7 +1,6 @@
 package life.hrx.weibo.controller;
-import life.hrx.weibo.auth.smscode.SmsCode;
+import life.hrx.weibo.security.auth.smscode.SmsCode;
 import life.hrx.weibo.dto.ResultDTO;
-import life.hrx.weibo.exception.CustomizeErrorCode;
 import life.hrx.weibo.properties.AliSmsConfig;
 import life.hrx.weibo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpSession;
 
 @Slf4j

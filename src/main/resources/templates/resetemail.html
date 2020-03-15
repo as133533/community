@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>感享-登录</title>
+    <title>发送邮件</title>
 
 
     <link href="/layui/css/layui.css" rel="stylesheet" type="text/css">
@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary myself-body">
 
 <div class="container " id="login-div">
 
@@ -43,7 +43,7 @@
 
 
                                     <div class="form-group">
-                                        <input type="text" class="form-control-byself form-control-user" id="email" name="email" placeholder="输入邮箱" onblur="emailCheck()">
+                                        <input type="text" class="form-control form-control-user change-form-control" id="email" name="email" placeholder="输入邮箱" onblur="emailCheck()">
                                         <span><input type="button" onclick="sendEmail()" class="layui-btn layui-btn-radius layui-btn-normal" id="email-btn" value="发送邮件" style="width: 30%"></span>
                                         <span id="emailTip" class="tips"></span>
                                     </div>

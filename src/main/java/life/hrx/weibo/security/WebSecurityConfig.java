@@ -1,13 +1,15 @@
 package life.hrx.weibo.security;
-import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationFailureHandler;
-import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationSuccessHandler;
-import life.hrx.weibo.auth.imagecode.CaptchaCodeFilter;
-import life.hrx.weibo.auth.myuserdetails.MyUserDetailsService;
-import life.hrx.weibo.auth.smscode.SmsCodeSecurityConfig;
+import life.hrx.weibo.security.auth.authenticationhandler.MyAuthenticationFailureHandler;
+import life.hrx.weibo.security.auth.authenticationhandler.MyAuthenticationSuccessHandler;
+import life.hrx.weibo.security.auth.imagecode.CaptchaCodeFilter;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetailsService;
+import life.hrx.weibo.security.auth.smscode.SmsCodeSecurityConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,7 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import javax.sql.DataSource;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -44,6 +52,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     private SmsCodeSecurityConfig smsCodeSecurityConfig;
 
+
+
     /**
      * web访问权限主要配置方法
      * @param http
@@ -52,7 +62,12 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.addFilterBefore(captchaCodeFilter, UsernamePasswordAuthenticationFilter.class)//将验证码过滤器放到用户密码验证过滤器之前
+        http.headers().frameOptions().disable() //spring security不仅开启了cors防护，还默认使响应头中X-Frame-Options的值设置为DENY，原本以为图片无法上传是cors未开放，原来是header种默认设置为了DENY
+        .and()
+            .cors()//允许spring boot开始配置cors 跨域访问
+
+        .and()
+            .addFilterBefore(captchaCodeFilter, UsernamePasswordAuthenticationFilter.class)//将验证码过滤器放到用户密码验证过滤器之前
             .logout()//开启logout功能，不需要编写controller,会去做清除session和删除remember-me数据库上的和游览器上的存储都会被删除
             .logoutUrl("/logout") //默认就为这个链接，不定义也行
             .deleteCookies("JSESSIONID")//自定义还需要删除的cookie名称
@@ -72,7 +87,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
         .and()
             .authorizeRequests()
-            .antMatchers("/login","/","/register","/question/**","/error","/kaptcha","/registercheck","/smslogin","/smscode","/resetemail","/resetpassword/**").permitAll()
+            .antMatchers("/login","/","/register","/question/**","/error","/kaptcha","/registercheck","/smslogin","/smscode","/resetemail","/resetpassword/**","/file/upload/**").permitAll()
             .antMatchers(HttpMethod.GET,"/comment/**").permitAll()
             .anyRequest().authenticated()//任何请求都需要被加上authenticated权限认证请求头
         .and()
@@ -140,5 +155,14 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         return tokenRepository;
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8000"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }

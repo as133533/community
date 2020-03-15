@@ -1,14 +1,16 @@
-package life.hrx.weibo.auth.imagecode;
+package life.hrx.weibo.security.auth.imagecode;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * 该类封装一个用于存储在session中的验证码谜底对象
  */
-public class CaptchaImageCode {
-    private String code; //表示验证码谜底
+public class CaptchaImageCode implements Serializable {
+    private static final long serialVersionUID=-8985545025228238754L;
 
+    private String code; //表示验证码谜底
     private LocalDateTime expireTime;//表示过期时间
 
     /**

@@ -1,13 +1,12 @@
-package life.hrx.weibo.auth.imagecode;
+package life.hrx.weibo.security.auth.imagecode;
 
 
-import life.hrx.weibo.auth.authenticationhandler.MyAuthenticationFailureHandler;
+import life.hrx.weibo.security.auth.authenticationhandler.MyAuthenticationFailureHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

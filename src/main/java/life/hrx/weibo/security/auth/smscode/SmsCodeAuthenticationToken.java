@@ -1,4 +1,4 @@
-package life.hrx.weibo.auth.smscode;
+package life.hrx.weibo.security.auth.smscode;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

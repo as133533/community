@@ -162,6 +162,17 @@ body {
 /*@media (prefers-reduced-motion:reduce){.form-control-byself{transition:none}}.form-control-byself::-ms-expand{background-color:transparent;border:0}.form-control-byself:focus{color:#6e707e;background-color:#fff;border-color:#bac8f3;outline:0;box-shadow:0 0 0 .2rem rgba(78,115,223,.25)}.form-control-byself::-webkit-input-placeholder{color:#858796;opacity:1}.form-control-byself::-moz-placeholder{color:#858796;opacity:1}.form-control-byself:-ms-input-placeholder{color:#858796;opacity:1}.form-control-byself::-ms-input-placeholder{color:#858796;opacity:1}.form-control-byself::placeholder{color:#858796;opacity:1}.form-control-byself:disabled,.form-control-byself[readonly]{background-color:#eaecf4;opacity:1}select.form-control-byself:focus::-ms-value{color:#6e707e;background-color:#fff}*/
 
 
+.change-form-control{
+    width: 68%;
+    display: initial;
+}
+
+.myself-body{
+
+    background: url('/images/back.jpg') no-repeat #e9f0f4;
+
+}
+
 .community-tag:hover {
     background-color: #339dff;
     color: #fff !important;

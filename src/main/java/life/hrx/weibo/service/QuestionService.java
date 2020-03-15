@@ -83,7 +83,7 @@ public class QuestionService {
 
     //问题分页公共方法
     private PaginationDTO<QuestionDTO> questionDTOPaginationDTO(Integer page, Integer size, Object questionExample) {
-        Integer offset = page < 0 ? 0 : (page - 1) * size;//计算offset
+        int offset = page < 0 ? 0 : (page - 1) * size;//计算offset
         Integer Count=0;
         List<Question> questions=new ArrayList<>();
         if (questionExample instanceof  QuestionExample){ //如果传进来的参数是QuestExample类型的。
@@ -91,17 +91,12 @@ public class QuestionService {
             Count = (int) questionMapper.countByExample((QuestionExample) questionExample);
             //当前页要显示的信息
              questions = questionMapper.selectByExampleWithBLOBsWithRowbounds((QuestionExample)questionExample, new RowBounds(offset, size));
-
-
         }else if (questionExample instanceof QuestionQueryDTO) { //如果传进来的参数是QuestionQueryDTO类型的，那么说明是要查找问题
             ((QuestionQueryDTO) questionExample).setOffset(offset);
             Count = questionExtMapper.countBySearch((QuestionQueryDTO) questionExample);
             questions = questionExtMapper.selectBySearch((QuestionQueryDTO) questionExample);
         }
-
-
-
-        Integer totalCount;//计算总页数
+        int totalCount;//计算总页数
         if (Count % size == 0) {
             totalCount = Count / size;
         } else {

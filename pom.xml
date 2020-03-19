@@ -147,6 +147,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
+<!--该配置作用是编译时生成spring-configuration-metadata.json 此文件主要给IDE使用，用于提示使用，如某个配置在配置文件中，点击ctrl+左键就能够跳转到配置类中-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+<!--因为fastdfs没有官方的自动配置加载库，并且maven中央库中没有fastdfs，该maven包是github上开源的自动配置加载包使用可以参考https://github.com/happyfish100/fastdfs-client-java-->
+        <dependency>
+            <groupId>org.csource</groupId>
+            <artifactId>fastdfs-client-java</artifactId>
+            <version>1.29-SNAPSHOT</version>
+        </dependency>
+
+
 
     </dependencies>
 

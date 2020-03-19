@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +42,8 @@ public class QuestionService {
             question.setCreator(user_id);
             questionMapper.insert(question);
         } else {//说明是在编辑问题，更新问题即可，但是要判断登录用户是否和该问题的发起人相同
-            if (question_from_db.getCreator() != user_id) {
+            //这里先前有个bug没有处理，因为mysql数据库中存储的是long类型，且已经超过了128L长度，long类型在超过这个长度就是两个对象，所以要使用longValue来比较
+            if (question_from_db.getCreator().longValue() !=user_id.longValue()) {
                 throw new CustomizeException(CustomizeErrorCode.ERROR_USER_QUESTION);
             }
             question_from_db.setGmtModified(System.currentTimeMillis());

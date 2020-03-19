@@ -4,6 +4,7 @@ import life.hrx.weibo.cache.TagCache;
 import life.hrx.weibo.dto.QuestionDTO;
 import life.hrx.weibo.model.Question;
 import life.hrx.weibo.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 //提问和编辑页面
 @Controller
+@Slf4j
 public class PublishController {
 
     @Autowired
@@ -76,7 +78,9 @@ public class PublishController {
         question.setId(id);//这个id是必要的，为了在修改问题的时候，不改变原来的id
 
         //这里传入两个参数进去，一个是查找问题是否在数据库中存在，如果不存在，一个id是防止在用户修改问题的时候，出现他人在修改别人id的情况
+
         questionService.updateOrInsert(question,myUserDetails.getId());
+
         return "redirect:/";
     }
 

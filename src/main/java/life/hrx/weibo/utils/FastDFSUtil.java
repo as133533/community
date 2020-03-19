@@ -7,7 +7,9 @@ import org.csource.common.MyException;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,11 +20,26 @@ import java.io.InputStream;
  */
 
 @Slf4j
+@Component
 public class FastDFSUtil {
-    static { //在类开始加载的时候，首先应该进行初始化
+
+//    @Value("${fastdfs.properties_path}") 注意@Value不能够直接给静态变量赋值，必须在public class类上加上@Component 再使用set的方式赋值
+    private   static String  propertiesPath;
+
+
+    @Value("${fastdfs.properties_path}")//必须要使用此方式才能够注入配置
+    public  void setPropertiesPath(String path) {
+        propertiesPath = path;
+    }
+
+    public static String getPropertiesPath() {
+        return propertiesPath;
+    }
+
+    public static void initProperties(){
         try {
-            String filePath=new ClassPathResource("application.properties").getFile().getAbsolutePath();//获得完整路径
-            ClientGlobal.initByProperties(filePath);
+
+            ClientGlobal.initByProperties(propertiesPath);
 
         }catch (Exception e)
         {
@@ -36,6 +53,7 @@ public class FastDFSUtil {
      * @return
      */
     public static String[] upload(FastDFSDTO fastDFSDTO){
+
 
         NameValuePair[] nameValuePairs = new NameValuePair[1]; //创建一个NameValuePair对象的数组，NameValuePair主要用来添加String的键值对，放到post请求中
         nameValuePairs[0] =new NameValuePair("author",fastDFSDTO.getAuthor());
@@ -75,6 +93,9 @@ public class FastDFSUtil {
      * @return
      */
     public static FileInfo getFile(String groupName,String remoteFileName){
+
+
+
         try {
             StorageClient storageClient = getStorageClient();
             return storageClient.get_file_info(groupName,remoteFileName);
@@ -93,6 +114,7 @@ public class FastDFSUtil {
      * @return
      */
     public static InputStream downFile(String groupName,String remoteFileName){
+
 
         try {
             StorageClient storageClient = getStorageClient();
@@ -114,6 +136,9 @@ public class FastDFSUtil {
      * @throws Exception
      */
     public static void deleteFile(String groupName,String remoteFileName) throws Exception {
+
+
+
         StorageClient storageClient = getStorageClient();
         int i = storageClient.delete_file(groupName, remoteFileName);
         log.info("删除文件成功"+i);
@@ -129,12 +154,13 @@ public class FastDFSUtil {
     }
 
     public static StorageClient getStorageClient() throws IOException {
+        initProperties();
         TrackerServer trackerServer = getTrackerServer();
         return new StorageClient(trackerServer);
 
     }
     public static TrackerServer getTrackerServer() throws IOException {
-
+        initProperties();
         TrackerClient trackerClient = new TrackerClient();
         return trackerClient.getTrackerServer();
 

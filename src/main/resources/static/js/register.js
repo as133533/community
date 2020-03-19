@@ -128,6 +128,7 @@ function submitCheck() {
     var a=usernameCheck()+pwdCheck()+pwdConfirmCheck()+phoneCheck()+emailCheck();
     if (a==0){
         $("#registerForm").submit();
+        location.href='/login';
     }
     return false;
 }

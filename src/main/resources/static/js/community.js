@@ -134,6 +134,14 @@ function showSelectTag(){
 
 
 
+$(function () {
+    $('#example').popover({
+        html:true
+    });
+    }
+);
+
+
 
 
 

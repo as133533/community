@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * 被AuthenticationManager所选择和调用，根据用户信息来获得权限，是认证的主要逻辑。
  * 模仿DaoAuthenticationProvider进行编写的代码，主要是根据token中的手机号，决定这个手机号的用户含有哪些权限。下一步还需要进行一些综合配置
  */
-@Slf4j
+
 public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
     private UserDetailsService userDetailsService;
 
@@ -37,7 +37,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
         //认证之前里面存储的是手机号
         SmsCodeAuthenticationToken authenticationToken = (SmsCodeAuthenticationToken)authentication;
-        log.info((String) authenticationToken.getPrincipal());
+
         UserDetails user = userDetailsService.loadUserByUsername((String) authenticationToken.getPrincipal());  //根据手机号码拿到用户信息
         if(user == null){
             throw new InternalAuthenticationServiceException("无法获取用户信息");

@@ -1,12 +1,13 @@
 package life.hrx.weibo.security.auth.smscode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * 前端传过来的数据存储对象
  */
 
-public class SmsCode {
+public class SmsCode implements Serializable {
     private String code; //短信验证码
 
     private LocalDateTime expireTime; //表示过期时间

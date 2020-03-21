@@ -16,7 +16,7 @@ import java.util.Properties;
 
 //标识这是一个配置类，需要说明的是@Configuration是单例的，也就是说其中的Bean对象每次生成的时候会被记录在上下文中，每次调用是调用同一个对象，一般都会用在@Value注解的成员变量和@Bean注解的方法。而@component是多例的，每次生成的是不同的Bean对象
 @Configuration
-@PropertySource(value = {"classpath:application.properties"}) //我们也可以将application.properties中的相关配置独立到一个properties中，然后修改这里的路径
+//@PropertySource(value = {"classpath:application.properties"}) //我们也可以将application.properties中的相关配置独立到一个properties中，然后修改这里的路径
 public class CaptchaConfig {
     @Value("${kaptcha.border}")
     private String border;

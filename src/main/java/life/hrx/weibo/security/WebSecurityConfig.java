@@ -6,6 +6,7 @@ import life.hrx.weibo.security.auth.myuserdetails.MyUserDetailsService;
 import life.hrx.weibo.security.auth.smscode.SmsCodeSecurityConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -51,6 +52,9 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SmsCodeSecurityConfig smsCodeSecurityConfig;
+
+    @Value("${web.domain}")
+    private String webDomain;
 
 
 
@@ -158,7 +162,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8000"));
+        configuration.setAllowedOrigins(Arrays.asList(webDomain));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

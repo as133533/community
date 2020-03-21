@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import java.nio.charset.StandardCharsets;
+
 @Configuration
-@PropertySource(value = {"classpath:application.properties"})
+//@PropertySource(value = {"classpath:a.properties"},encoding = "UTF-8")
 @Slf4j
 public class AliSmsConfig {
     @Value("${AliSms.accessKeyId}")
@@ -43,6 +45,12 @@ public class AliSmsConfig {
         request.setAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phone);
+
+
+        //这个必须加入，因为spring boot读取properties的配置为ISO_8859_1。即使将文件类型改为utf-8也会因为读取方式的不同而乱码,未来会寻求一个更有效的方法
+        this.signName=new String(signName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        log.info(signName);
+
         request.putQueryParameter("SignName", signName);
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", "{\"code\":\""+code+"\"}");

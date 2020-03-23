@@ -45,11 +45,6 @@ public class PublishController {
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
         model.addAttribute("tags", TagCache.get());
-//        User user = (User)request.getSession().getAttribute("user");
-//        if (user == null){
-//            model.addAttribute("error","用户未登录");
-//            return "publish";
-//        }
         Object principal = authentication.getPrincipal();
         MyUserDetails myUserDetails = (MyUserDetails) principal;
         if (StringUtils.isBlank(title)){

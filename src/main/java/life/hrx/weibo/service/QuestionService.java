@@ -61,16 +61,26 @@ public class QuestionService {
     //通过前端传递的的page和size参数得到paginationDTO
     public PaginationDTO<QuestionDTO> pagination_by_question(String search, String tag, String sort,Integer page, Integer size) {
 
+        //search中不能出现+ * ?等字符
         if (StringUtils.isNotBlank(search)){
             String[] tags = StringUtils.split(search, " ");
-            search= Arrays.stream(tags).collect(Collectors.joining("|")); //用户输入的Search替换成用|分割
+            search= Arrays
+                    .stream(tags)
+                    .filter(StringUtils::isNotBlank)
+                    .map(t -> t.replace("+","").replace("*","").replace("?",""))
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.joining("|"));
         }
+
 
 
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
         questionQueryDTO.setSize(size);
-        questionQueryDTO.setTag(tag);
+        if (StringUtils.isNotBlank(tag)) {
+            tag = tag.replace("+", "").replace("*", "").replace("?", "");
+            questionQueryDTO.setTag(tag);
+        }
 
         for (SortEnum sortEnum:SortEnum.values()) {
             if (sortEnum.name().equalsIgnoreCase(sort)){
@@ -146,11 +156,22 @@ public class QuestionService {
             return new ArrayList<>();
         }
 
-        String replace = question_byId.getTag().replace(",", "|");
-        Question question = new Question();
+
+
+        String[] tags=StringUtils.split(question_byId.getTag(),",");
+
+        //过滤掉查找出来的所有空格 + * ?等标签
+        String regexpTag = Arrays
+                .stream(tags)
+                .filter(StringUtils::isNotBlank)
+                .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.joining("|"));
+        Question question=new Question();
         question.setId(question_byId.getId());
-        question.setTag(replace);
-        List<Question> questions = questionExtMapper.selectRelated(question);
+        question.setTag(regexpTag);
+
+        List<Question> questions=questionExtMapper.selectRelated(question);
 
         List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();

@@ -57,7 +57,7 @@ public class TagCache {
         List<String> tagslist = tagDTOS.stream().flatMap(tagDTO -> tagDTO.getTags().stream()).collect(Collectors.toList());//返回所有的标签组成的集合
 
         //将split中与collect中不同的挑选出来，使用joining往其中添加
-        String invalid = Arrays.stream(split).filter(s -> !tagslist.contains(s)).collect(Collectors.joining(","));
+        String invalid = Arrays.stream(split).filter(StringUtils::isNotBlank).filter(s ->  !tagslist.contains(s)).collect(Collectors.joining(","));
         return invalid;
 
 

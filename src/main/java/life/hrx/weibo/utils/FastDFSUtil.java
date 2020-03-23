@@ -27,6 +27,7 @@ public class FastDFSUtil {
     private   static String  propertiesPath;
 
 
+
     @Value("${fastdfs.properties_path}")//必须要使用此方式才能够注入配置
     public  void setPropertiesPath(String path) {
         propertiesPath = path;
@@ -144,14 +145,7 @@ public class FastDFSUtil {
         log.info("删除文件成功"+i);
     }
 
-    /**
-     * 获得访问文件的地址
-     * @return http://ip:端口(为配置中的(fastdfs.http_tracker_http_port)/
-     * @throws IOException
-     */
-    public static String getTrackerUrl() throws IOException {
-        return "http://"+getTrackerServer().getInetSocketAddress().getHostString()+":"+ClientGlobal.getG_tracker_http_port()+"/";
-    }
+
 
     public static StorageClient getStorageClient() throws IOException {
         initProperties();

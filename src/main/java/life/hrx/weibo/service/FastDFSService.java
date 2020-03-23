@@ -2,6 +2,8 @@ package life.hrx.weibo.service;
 
 import life.hrx.weibo.dto.FastDFSDTO;
 import life.hrx.weibo.utils.FastDFSUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +21,10 @@ public class FastDFSService {
      * @param multipartFile
      * @return path 完整的存储路径，如http://ip:端口/group1/M00/02/44/xxxxx.sh
      */
+
+    @Value("${web.domain}")
+    private String webDomain;
+
     public String saveFile(MultipartFile multipartFile) throws IOException {
         String[] fileAbsolutePath={};
         String filename = multipartFile.getOriginalFilename();
@@ -34,7 +40,11 @@ public class FastDFSService {
 
         fileAbsolutePath = FastDFSUtil.upload(fastDFSDTO); //获得文件存储后的路径存储路径
 
-        String path=FastDFSUtil.getTrackerUrl()+fileAbsolutePath[0]+"/"+fileAbsolutePath[1];
-        return path;
+        if (!StringUtils.endsWith(webDomain,"/")){
+            webDomain=webDomain+"/";
+        }
+
+        return webDomain+fileAbsolutePath[0]+"/"+fileAbsolutePath[1];
+
     }
 }

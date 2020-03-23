@@ -30,14 +30,16 @@ public class IndexController {
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
                         @RequestParam(name = "size",defaultValue = "5") Integer size,
                         @RequestParam(name = "search",required = false) String search,
-                        @RequestParam(name="tag",required = false) String tag
+                        @RequestParam(name="tag",required = false) String tag,
+                        @RequestParam(name="sort",required=false )String sort
                         ){
-        PaginationDTO<QuestionDTO> paginationDTO = questionService.pagination_by_question(search,tag,page, size);
+        PaginationDTO<QuestionDTO> paginationDTO = questionService.pagination_by_question(search,tag,sort,page, size);
         List<String> tags = hotTagCache.getHots();
         model.addAttribute("pagination",paginationDTO);
         model.addAttribute("tags",tags);
         model.addAttribute("tag",tag);
         model.addAttribute("search",search);
+        model.addAttribute("sort",sort);
         return "index";
     }
 }

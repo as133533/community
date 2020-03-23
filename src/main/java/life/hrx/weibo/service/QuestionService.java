@@ -3,6 +3,7 @@ package life.hrx.weibo.service;
 import life.hrx.weibo.dto.PaginationDTO;
 import life.hrx.weibo.dto.QuestionDTO;
 import life.hrx.weibo.dto.QuestionQueryDTO;
+import life.hrx.weibo.enums.SortEnum;
 import life.hrx.weibo.exception.CustomizeErrorCode;
 import life.hrx.weibo.exception.CustomizeException;
 import life.hrx.weibo.mapper.QuestionExtMapper;
@@ -58,7 +59,7 @@ public class QuestionService {
 
 
     //通过前端传递的的page和size参数得到paginationDTO
-    public PaginationDTO<QuestionDTO> pagination_by_question(String search,String tag,Integer page, Integer size) {
+    public PaginationDTO<QuestionDTO> pagination_by_question(String search, String tag, String sort,Integer page, Integer size) {
 
         if (StringUtils.isNotBlank(search)){
             String[] tags = StringUtils.split(search, " ");
@@ -70,6 +71,14 @@ public class QuestionService {
         questionQueryDTO.setSearch(search);
         questionQueryDTO.setSize(size);
         questionQueryDTO.setTag(tag);
+
+        for (SortEnum sortEnum:SortEnum.values()) {
+            if (sortEnum.name().equalsIgnoreCase(sort)){
+                questionQueryDTO.setSort(sort);
+                break;
+            }
+        }
+
         return questionDTOPaginationDTO(page, size, questionQueryDTO);
     }
 
@@ -88,12 +97,12 @@ public class QuestionService {
         int offset = page < 0 ? 0 : (page - 1) * size;//计算offset
         Integer Count=0;
         List<Question> questions=new ArrayList<>();
-        if (questionExample instanceof  QuestionExample){ //如果传进来的参数是QuestExample类型的。
+        if (questionExample instanceof  QuestionExample){ //如果传进来的参数是QuestExample类型的。说明是个人问题分页
             //全部的信息数
             Count = (int) questionMapper.countByExample((QuestionExample) questionExample);
             //当前页要显示的信息
              questions = questionMapper.selectByExampleWithBLOBsWithRowbounds((QuestionExample)questionExample, new RowBounds(offset, size));
-        }else if (questionExample instanceof QuestionQueryDTO) { //如果传进来的参数是QuestionQueryDTO类型的，那么说明是要查找问题
+        }else if (questionExample instanceof QuestionQueryDTO) { //如果传进来的参数是QuestionQueryDTO类型的，那么说明是首页问题分页
             ((QuestionQueryDTO) questionExample).setOffset(offset);
             Count = questionExtMapper.countBySearch((QuestionQueryDTO) questionExample);
             questions = questionExtMapper.selectBySearch((QuestionQueryDTO) questionExample);

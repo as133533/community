@@ -24,10 +24,15 @@
 
                 <ul class="nav navbar-nav">
                     <li role="presentation">
+                        <!--简陋的一个留言板处理，未来会专门编写一个留言板视图-->
+                        <a href="/question/1">Bug反馈及建议</a>
+
+                    </li>
+                    <li role="presentation">
 
                         <a   data-container="body" data-toggle="popover" data-placement="bottom" data-content="
                             <p>后端基于spring boot ; mybatis generator </p>
-                            <p>集成spring security实现用户登录及权限控制</p>
+                            <p>集成spring security实现用户登录及权限控制。如果在登录的情况下10分钟内为进行任何操作，会被要求重新登录</p>
                             <p>集成fastdfs作为文件系统，暂时只用于发布问题时的图片上传功能。并由nginx作代理访问到服务器资源</p>
                             <p>简单集成了redis作为session的存储，点赞功能及游览数等未来会逐步迁移到redis上</p>
                             <p>前端基于jquery ; bootstrap ; thymeleaf  </p>" id="example">
@@ -35,6 +40,7 @@
                         </a>
 
                     </li>
+
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right" >

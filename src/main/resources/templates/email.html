@@ -3,13 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script>
-        window.onload=function (ev) {
-            var a=document.getElementById("reset").getAttribute('href');
-            document.getElementById("reset").innerText=a;
-
-        }
-    </script>
 </head>
 
 <body>
@@ -17,11 +10,11 @@
 <p>尊敬的用户</p>
 <p>
     要重置密码
-    <a th:href="@{'http://localhost:8000/resetpassword/'+${token}}" >点击这里</a>.
+    <a th:href="@{${webDomain}+'resetpassword/'+${token}}" >点击这里</a>.
 
 </p>
 <p>或者，您可以将以下链接粘贴到浏览器的地址栏中：</p>
-<p><a th:href="@{'http://localhost:8000/resetpassword/'+${token}}"  th:text="'http://localhost:8000/resetpassword/'+${token}"></a> </p>
+<p><a th:href="@{${webDomain}+'resetpassword/'+${token}}"  th:text="${webDomain}+'resetpassword/'+${token}"></a> </p>
 <p>如果您没有请求密码重置，请忽略此消息</p>
 <p>图灵社区</p>
 </body>

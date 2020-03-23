@@ -13,5 +13,6 @@ public class QuestionQueryDTO {
     private String tag; //用于在热门话题上，我们点击热门话题的时候，将标签当成搜索内容引入
     private Integer offset; //当前页数
     private Integer size; //分页大小
+    private String sort;
 
 }

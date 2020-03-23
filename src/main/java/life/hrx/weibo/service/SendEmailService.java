@@ -1,7 +1,9 @@
 package life.hrx.weibo.service;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,6 +25,9 @@ public class SendEmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
+    @Value("${web.domain}")
+    private String webDomain;
+
     @Async //为发送邮件方法开启异步，因为发送邮件是一个很容易阻塞的方法，，未来可能加入rabbitmq
     public void sendEmail(String receiver,String token) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -34,6 +39,10 @@ public class SendEmailService {
 
         Context context = new Context();
         context.setVariable("token",token);
+        if (!StringUtils.endsWith(webDomain,"/")){
+            webDomain=webDomain+'/';
+        }
+        context.setVariable("webDomain",webDomain);
         String process = templateEngine.process("email.html", context);//使用Thymeleaf做邮件模板发送
         mimeMessageHelper.setText(process,true);//true代表发送的是html
         javaMailSender.send(mimeMessage);

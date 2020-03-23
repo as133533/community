@@ -5,6 +5,7 @@ import life.hrx.weibo.security.auth.imagecode.CaptchaCodeFilter;
 import life.hrx.weibo.security.auth.myuserdetails.MyUserDetailsService;
 import life.hrx.weibo.security.auth.smscode.SmsCodeSecurityConfig;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -161,6 +162,10 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
+        if (StringUtils.endsWith(webDomain,"/")){//配置参数中的结尾不能带/ ，如果带了/ 那么就删除
+            webDomain=StringUtils.substring(webDomain,0,webDomain.length()-1);
+        }
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(webDomain));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));

@@ -126,9 +126,33 @@ function ajaxCheck(str,type){
 
 function submitCheck() {
     var a=usernameCheck()+pwdCheck()+pwdConfirmCheck()+phoneCheck()+emailCheck();
+    var username=$("#username").val();
+    var email=$("#email").val();
+    var phone=$("#phone").val();
+    var password=$("#password").val();
+    var password1=$("#password1").val();
+
     if (a==0){
-        $("#registerForm").submit();
-        location.href='/login';
+        $.ajax({
+            type:"POST",
+            url: "/register",
+            data: {
+              "username":username,
+              "email":email,
+              "phone":phone,
+              "password":password,
+              "password1":password1
+            },
+            success:function (json) {
+                if (json.code ==200){
+                    location.href='/login';
+                }
+                else{
+                    $("#registerError").text(json.message);
+                }
+
+            }
+        });
     }
-    return false;
+
 }

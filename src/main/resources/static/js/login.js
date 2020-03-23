@@ -13,7 +13,10 @@ function usernameCheck(){
         return 0;
 
     }
-};
+}
+function changeKaptcha(){
+    $("#kaptcha").attr("src","/kaptcha?"+Math.floor(Math.random()*100)); //这里加随机数的目的主要是为了防止缓存而导致图片未更换
+}
 
 function loginAndCheck() {
 
@@ -39,7 +42,9 @@ function loginAndCheck() {
                     location.href='/'; //会在后端写入将要跳转的链接
 
                 }else{
+                    $("#kaptcha").click();
                     $("#loginError").text(json.message);
+
 
                 }
             },
@@ -55,7 +60,6 @@ function loginAndCheck() {
     }
 
 }
-
 $('#login-div').bind('keyup', function(event) {
 
     var theEvent = window.event;

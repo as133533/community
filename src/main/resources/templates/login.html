@@ -50,7 +50,7 @@
 
                   <div class="form-group">
                     <input type="text" class="form-control form-control-user change-form-control" id="captchaCode" name="captchaCode" placeholder="输入验证码" >
-                    <span><img src="/kaptcha" id="kaptcha" width="110px" height="40px" style="vertical-align: middle"/></span>
+                    <span><img src="/kaptcha" id="kaptcha" width="110px" height="40px" style="vertical-align: middle" onclick="changeKaptcha()" /></span>
 
                   </div>
 
@@ -107,13 +107,13 @@
 
 <script src="/js/login.js"></script>
 <script src="/js/bootstrap.min.js" type="application/javascript"></script>
-<script>
-    window.onload=function(ev){
-      $("#kaptcha").click(function (ev1) {//当点击验证码图片的时候，重新加载
-       $("#kaptcha").attr("src","/kaptcha?"+Math.floor(Math.random()*100)); //这里加随机数的目的主要是为了防止缓存而导致图片未更换
-      })
-  };
-</script>
+<!--<script>-->
+<!--    window.onload=function(ev){-->
+<!--      $("#kaptcha").click(function (ev1) {//当点击验证码图片的时候，重新加载-->
+<!--       $("#kaptcha").attr("src","/kaptcha?"+Math.floor(Math.random()*100)); //这里加随机数的目的主要是为了防止缓存而导致图片未更换-->
+<!--      })-->
+<!--  };-->
+<!--</script>-->
 
 
 

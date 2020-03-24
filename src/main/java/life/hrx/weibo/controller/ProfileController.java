@@ -30,10 +30,7 @@ public class ProfileController {
                           Authentication authentication
                           ){
 
-//        User user = (User)request.getSession().getAttribute("user");
-//        if (user == null){
-//            throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
-//        }
+
 
         Object principal = authentication.getPrincipal();
         MyUserDetails myUserDetails = (MyUserDetails) principal;

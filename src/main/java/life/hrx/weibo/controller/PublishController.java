@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 
 //提问和编辑页面
@@ -59,15 +61,21 @@ public class PublishController {
             model.addAttribute("error","问题标签不能为空");
             return "publish";
         }
+
         String s = TagCache.filterInvalid(tag);
         //如果标签非法
         if (StringUtils.isNotBlank(s)){
             model.addAttribute("error","输入非法标签"+s);
             return "publish";
         }
+
+        //去除掉空格tag
+        String[] split = StringUtils.split(tag,",");
+        String reTag = Arrays.stream(split).filter(StringUtils::isNotBlank).collect(Collectors.joining(","));
+
         Question question = new Question();
         question.setDescription(description);
-        question.setTag(tag);
+        question.setTag(reTag);
         question.setTitle(title);
         question.setLikeCount(0);
         question.setId(id);//这个id是必要的，为了在修改问题的时候，不改变原来的id

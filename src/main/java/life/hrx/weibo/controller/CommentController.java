@@ -33,10 +33,7 @@ public class CommentController{
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     public ResultDTO comment(@RequestBody CommentCreateDTO commentCreateDTO,
                               Authentication authentication){//@RequestBody 默认就返回JSON格式的数据
-//        User user = (User)request.getSession().getAttribute("user");
-//        if (user==null){
-//            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
-//        }
+
         //这里就不验证用户是否登录了，而是直接由spring security控制如果没有登录的情况下访问这个地址，就直接跳转到登录页，前端可以在未登录的情况下，不显示提交按钮而显示注册和登录超链接
 
 

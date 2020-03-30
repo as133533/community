@@ -4,7 +4,7 @@ package life.hrx.weibo.dto;
 import lombok.Data;
 
 /**
- * Created by codedrinker on 2019/8/2.
+ * PriorityQueue中的排序对象必须要实现Comparable接口进行排序
  */
 @Data
 public class HotTagDTO implements Comparable {

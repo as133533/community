@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 /**
- * Created by codedrinker on 2019/8/2.
+ * 进行top N计算
  */
 
 @Component
@@ -26,11 +26,11 @@ public class HotTagCache {
             HotTagDTO hotTagDTO = new HotTagDTO();
             hotTagDTO.setName(name);
             hotTagDTO.setPriority(priority);
-            if (priorityQueue.size() < max) {
+            if (priorityQueue.size() < max) { //无论如何都先放入10个数
                 priorityQueue.add(hotTagDTO);
             } else {
-                HotTagDTO minHot = priorityQueue.peek();
-                if (hotTagDTO.compareTo(minHot) > 0) {
+                HotTagDTO minHot = priorityQueue.peek(); //取出其中最小的数
+                if (hotTagDTO.compareTo(minHot) > 0) { //如果比最小的要大，则删除原先最小的数，加入这个数
                     priorityQueue.poll();
                     priorityQueue.add(hotTagDTO);
                 }
@@ -38,6 +38,8 @@ public class HotTagCache {
         });
 
 
+
+        //下面需要将排序好的Queue中的弹出，存到List中，因为前端的遍历操作只能在list中进行，queue不支持
         List<String> sortedTags = new ArrayList<>();
 
         HotTagDTO poll = priorityQueue.poll();

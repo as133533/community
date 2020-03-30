@@ -107,14 +107,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
             .tokenRepository(persistentTokenRepository());//设置token持久化到数据库中
 
 
-//
-//        //在我们添加了security依赖后，所有的地址都会被spring security所控制，现在我们只是需要密码的加密解密的验证，所以我们要添加一个配置类，配置为所有地址都可以匿名访问
-//
-//        http.authorizeRequests().antMatchers("/**","/js/**").permitAll().anyRequest().authenticated().and().csrf().disable();//上面指定路径"/**"表示所有页面都可以访问，所有的请求都是允许的
-//
-//
-//        //spring security会接管注销服务，我想自定义但是没有用，只好在这边操作，
-//        http.logout().logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("token");
+
 
 
     }
@@ -160,6 +153,10 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         return tokenRepository;
     }
 
+    /**
+     * spring security特有的cors配置
+     * @return
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 

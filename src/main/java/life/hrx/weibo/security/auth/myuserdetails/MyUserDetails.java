@@ -18,7 +18,7 @@ public class MyUserDetails  implements UserDetails {
     private String email; //用户邮箱
     private String gmtCreate; //用户创建时间
     private String avatarUrl; //用户图像地址
-    private Long unreadCount;
+    private Long unreadCount; //用户未读数
     private boolean accountNonExpired;   //是否没过期
     private boolean accountNonLocked;   //是否没被锁定
     private boolean credentialsNonExpired;  //是否没过期

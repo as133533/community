@@ -50,6 +50,10 @@ public class TagCache {
         //将tags按,分离成数组
         String[] split = StringUtils.split(tags,",");
 
+        if (split.length==0){ //如果传进来只有,那么就直接返回
+            return tags;
+        }
+
         //获得所有的tags组成的数组
         List<TagDTO> tagDTOS = get();
 

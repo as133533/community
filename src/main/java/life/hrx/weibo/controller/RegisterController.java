@@ -4,7 +4,6 @@ import life.hrx.weibo.dto.ResultDTO;
 import life.hrx.weibo.model.User;
 import life.hrx.weibo.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.util.fst.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -37,7 +37,7 @@ public class HotTagTasks {
         //这里权重的设计是 遍历每个问题得到标签数量，使用Map数据结构存储各个标签的权重值，权重值的计算方式为 5*含有该标签的问题数量+该标签含有的所有问题的评论数总和。
         //最后需要使用topN,即排序后取前n个大的数，topN问题就是堆排序思想
 
-        while (offset ==0 || list.size() == limit){
+        while (offset ==0 || list.size() == limit){ //循环条件是每次分页的去取，否则一次性去取可能导致数据库压力太大
             list = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
             for (Question question:list){
                 String[] tags = StringUtils.split(question.getTag(), ","); //从问题中获得每个问题的标签

@@ -148,11 +148,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-<!--elasticsearch库-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
+<!--&lt;!&ndash;elasticsearch库&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
+<!--        </dependency>-->
 <!--该配置作用是编译时生成spring-configuration-metadata.json 此文件主要给IDE使用，用于提示使用，如某个配置在配置文件中，点击ctrl+左键就能够跳转到配置类中-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

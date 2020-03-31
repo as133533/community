@@ -39,7 +39,7 @@ function loginAndCheck() {
             },
             success:function (json) {
                 if (json.code === 200){
-                    location.href='/'; //会在后端写入将要跳转的链接
+                    location.href=json.data; //会在后端写入将要跳转的链接
 
                 }else{
                     $("#kaptcha").click();

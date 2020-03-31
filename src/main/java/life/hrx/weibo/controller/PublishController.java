@@ -1,4 +1,5 @@
 package life.hrx.weibo.controller;
+import life.hrx.weibo.mapper.QuestionMapper;
 import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.cache.TagCache;
 import life.hrx.weibo.dto.QuestionDTO;
@@ -26,6 +27,9 @@ public class PublishController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired(required = false)
+    private QuestionMapper questionMapper;
 
 
 
@@ -77,7 +81,6 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(reTag);
         question.setTitle(title);
-        question.setLikeCount(0);
         question.setId(id);//这个id是必要的，为了在修改问题的时候，不改变原来的id
 
         //这里传入两个参数进去，一个是查找问题是否在数据库中存在，如果不存在，一个id是防止在用户修改问题的时候，出现他人在修改别人id的情况
@@ -96,7 +99,7 @@ public class PublishController {
      */
     @RequestMapping(value = "/publish/{id}",method = RequestMethod.GET)
     public String publish(Model model, @PathVariable("id") Long id){
-        QuestionDTO question_byId = questionService.find_question_byId(id);
+        Question question_byId = questionMapper.selectByPrimaryKey(id);
         model.addAttribute("title",question_byId.getTitle());
         model.addAttribute("description",question_byId.getDescription());
         model.addAttribute("tag",question_byId.getTag());

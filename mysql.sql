@@ -17,6 +17,7 @@ create table user
     comment '用户';
 
 
+
 -- auto-generated definition
 create table question
 (
@@ -28,8 +29,6 @@ create table question
     gmt_modified  bigint        null comment '问题的上一次修改时间',
     creator       bigint        not null comment '问题的创建人id主键',
     comment_count int default 0 null comment '评论数',
-    view_count    int default 0 null comment '游览数',
-    like_count    int default 0 null comment '点赞数',
     tag           varchar(256)  null comment '问题标签'
 )
     comment '问题';
@@ -68,14 +67,13 @@ create table comment
 (
     id            bigint auto_increment
         primary key,
-    parent_id     bigint           not null comment '问题的id 或者评论的id',
-    type          int              not null comment '1代表是评论了问题， 2代表是评论了某个评论',
-    commentator   bigint           not null comment '评论创建人id',
-    gmt_create    bigint           not null comment '评论创建时间',
-    gmt_modified  bigint           not null comment '评论修改时间',
-    like_count    bigint default 0 null comment '点赞数',
-    content       varchar(1024)    null comment '评论内容',
-    comment_count int    default 0 null comment '评论数'
+    parent_id     bigint        not null comment '问题的id 或者评论的id',
+    type          int           not null comment '1代表是评论了问题， 2代表是评论了某个评论',
+    commentator   bigint        not null comment '评论创建人id',
+    gmt_create    bigint        not null comment '评论创建时间',
+    gmt_modified  bigint        not null comment '评论修改时间',
+    content       varchar(1024) null comment '评论内容',
+    comment_count int default 0 null comment '评论数'
 )
     comment '评论和二级评论';
 

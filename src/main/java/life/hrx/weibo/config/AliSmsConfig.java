@@ -1,4 +1,4 @@
-package life.hrx.weibo.properties;
+package life.hrx.weibo.config;
 
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
@@ -11,7 +11,6 @@ import com.aliyuncs.profile.DefaultProfile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.nio.charset.StandardCharsets;
 

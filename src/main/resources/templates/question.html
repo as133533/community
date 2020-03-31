@@ -31,7 +31,9 @@
                 作者：<span th:text="${question.user.username}"></span> |
                 发布时间：<span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> |
                 阅读数： <span th:text="${question.viewCount}"></span>
-            </span>
+
+                </span>
+
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                 <!--内容-->
@@ -55,11 +57,19 @@
 
                 <!--编辑-->
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" sec:authorize="isAuthenticated()">
+
+                <div class="menu col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                    点个赞吧！<span th:data-id="${question.id}" type-id="question"  th:auth-id="${#authentication.principal}" onclick="likeCount(this)"
+                               th:class="${question.isLike ? 'comment-icon  menu active':'comment-icon  menu'}">
+                    <span class="glyphicon glyphicon-thumbs-up icon" ></span>
+                    <span th:text="${question.likeCount}" id="question_like_count" ></span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
                     <a th:href="@{'/publish/'+${question.id}}" class="community-menu"
                        th:if="${#authentication.principal.id == question.creator}">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                        <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true" >编辑</span>
                     </a>
+                </span>
                 </div>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             </div>
@@ -84,11 +94,21 @@
                             </h5>
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
-                                <span class="glyphicon glyphicon-thumbs-up icon"></span>
+
+
+                                <!--点赞-->
+                                <span th:data-id="${comment.id}" type-id="comment"  th:auth-id="${#authentication.principal}" onclick="likeCount(this)"
+                                      th:class="${comment.isLike ? 'comment-icon active':'comment-icon'}" >
+                                    <span  class="glyphicon glyphicon-thumbs-up icon"  ></span>
+                                    <span th:text="${comment.likeCount}" id="like_count"></span>
+                                </span>
+
+
+                                <!--评论展开-->
                                 <span th:data-id="${comment.id}"
                                       onclick="collapseComments(this)" class="comment-icon">
                                     <span class="glyphicon glyphicon-comment"></span>
-                                    <span th:text="${comment.commentCount}"></span>
+                                    <span th:text="${comment.commentCount}" style="margin-right: 6px;"></span>
                                 </span>
                                 <span class="pull-right"
                                       th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>

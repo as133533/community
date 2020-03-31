@@ -18,13 +18,7 @@
         <result column="tag" jdbcType="VARCHAR" property="tag" />
     </resultMap>
 
-    <!--用于增加游览数-->
-    <update id="incView" parameterType="life.hrx.weibo.model.Question">
-    update QUESTION
-    set
-    VIEW_COUNT = VIEW_COUNT + #{viewCount,jdbcType=INTEGER}
-    where id = #{id}
-    </update>
+
 
 
     <!--用于增加回复数-->

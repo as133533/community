@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * 传递给前端的json数据对象，是一个结果对象
- * @param <T>
+ *
  */
 @Data
 public class ResultDTO<T> {

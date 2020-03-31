@@ -10,6 +10,7 @@ import life.hrx.weibo.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -49,15 +50,18 @@ public class CommentController{
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
         comment.setType(commentCreateDTO.getType());
-        comment.setLikeCount(0L);
         commentService.Insert_Comment(comment,myUserDetails);
         return ResultDTO.okOf();
 
     }
     @ResponseBody
     @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
-    public ResultDTO<List<CommentDTO>> comment(@PathVariable("id") Long id){
-        List<CommentDTO> commentDTOS = commentService.toListById(id, CommentTypeEnum.COMMENT);
+    public ResultDTO<List<CommentDTO>> comment(@PathVariable("id") Long id,Authentication authentication){
+        MyUserDetails userDetails=null;
+        if (!StringUtils.equals(SecurityContextHolder.getContext().getAuthentication().getName(),"anonymousUser")){ //如果不是匿名用户，说明已经登录
+            userDetails=(MyUserDetails)authentication.getPrincipal();
+        }
+        List<CommentDTO> commentDTOS = commentService.toListById(id, CommentTypeEnum.COMMENT,userDetails);
 
         return ResultDTO.okOf(commentDTOS);
     }

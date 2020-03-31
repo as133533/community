@@ -1,4 +1,5 @@
 package life.hrx.weibo.service;
+import life.hrx.weibo.enums.RedisKeyName;
 import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import life.hrx.weibo.dto.CommentDTO;
 import life.hrx.weibo.enums.CommentTypeEnum;
@@ -32,6 +33,9 @@ public class CommentService {
 
     @Autowired(required = false)
     private NotificationMapper notificationMapper;
+
+    @Autowired
+    private LikeCountService likeCountService;
 
     public void Insert_Comment(Comment comment, MyUserDetails user) {
         if (comment.getParentId()==null || comment.getParentId()==0){
@@ -71,7 +75,7 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> toListById(Long id, CommentTypeEnum commentTypeEnum) {
+    public List<CommentDTO> toListById(Long id, CommentTypeEnum commentTypeEnum,MyUserDetails userDetails) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(commentTypeEnum.getType());
         commentExample.setOrderByClause("gmt_create desc");
@@ -84,8 +88,15 @@ public class CommentService {
             CommentDTO commentDTO = new CommentDTO();
             BeanUtils.copyProperties(comment, commentDTO);
             commentDTO.setUser(user);
+            commentDTO.setLikeCount(likeCountService.count(RedisKeyName.LIKE_COUNT_COMMENT.getType()+":"+comment.getId()));
+            if (userDetails==null){//如果用户名不存在说明未登录
+                commentDTO.setIsLike(false);
+            }else{//查看该用户是否登录
+                commentDTO.setIsLike(likeCountService.isLike(RedisKeyName.LIKE_COUNT_COMMENT.getType()+":"+comment.getId(),userDetails));
+            }
             return commentDTO;
         }).collect(Collectors.toList());
+
         return commentDTOS;
     }
 

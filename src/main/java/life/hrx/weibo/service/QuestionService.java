@@ -3,6 +3,7 @@ package life.hrx.weibo.service;
 import life.hrx.weibo.dto.PaginationDTO;
 import life.hrx.weibo.dto.QuestionDTO;
 import life.hrx.weibo.dto.QuestionQueryDTO;
+import life.hrx.weibo.enums.RedisKeyName;
 import life.hrx.weibo.enums.SortEnum;
 import life.hrx.weibo.exception.CustomizeErrorCode;
 import life.hrx.weibo.exception.CustomizeException;
@@ -10,15 +11,20 @@ import life.hrx.weibo.mapper.QuestionExtMapper;
 import life.hrx.weibo.mapper.QuestionMapper;
 import life.hrx.weibo.mapper.UserMapper;
 import life.hrx.weibo.model.*;
+import life.hrx.weibo.security.auth.myuserdetails.MyUserDetails;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +37,12 @@ public class QuestionService {
     @Autowired(required = false)
     private QuestionExtMapper questionExtMapper;
 
+    @Autowired
+    private LikeCountService likeCountService;
+
+    @Resource
+    private RedisTemplate<String,Object> redisTemplate;
+
 
     //用来增加新的问题或者更新问题
     public void updateOrInsert(Question question, Long user_id) {
@@ -39,7 +51,6 @@ public class QuestionService {
             question.setCommentCount(0);
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            question.setViewCount(0);
             question.setCreator(user_id);
             questionMapper.insert(question);
         } else {//说明是在编辑问题，更新问题即可，但是要判断登录用户是否和该问题的发起人相同
@@ -131,6 +142,8 @@ public class QuestionService {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
+            questionDTO.setLikeCount(likeCountService.count(RedisKeyName.LIKE_COUNT_QUESTION.getType()+":"+question.getId()));
+            questionDTO.setViewCount(countView(question.getId()));
             return questionDTO;
         }).collect(Collectors.toList());//让questions列表中的每一个都变成已经设置好的questionDTO返回
 
@@ -140,13 +153,20 @@ public class QuestionService {
 
     }
 
-    public QuestionDTO find_question_byId(Long id) {
+    public QuestionDTO find_question_byId(Long id, MyUserDetails userDetails) {
         Question question = questionMapper.selectByPrimaryKey(id);
         Long creator = question.getCreator();
         User user = userMapper.selectByPrimaryKey(creator);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         questionDTO.setUser(user);
+        questionDTO.setLikeCount(likeCountService.count(RedisKeyName.LIKE_COUNT_QUESTION.getType()+":"+id));
+        questionDTO.setViewCount(countView(id));
+        if (userDetails==null){
+            questionDTO.setIsLike(false);
+        }else {
+            questionDTO.setIsLike(likeCountService.isLike(RedisKeyName.LIKE_COUNT_QUESTION.getType()+":"+id,userDetails));
+        }
         return questionDTO;
 
     }
@@ -182,12 +202,19 @@ public class QuestionService {
         return questionDTOS;
     }
     public void incView(Long id){
-        Question question = new Question();
-        question.setId(id);
-        //每次增加的数量
-        question.setViewCount(1);
-        questionExtMapper.incView(question);
+        redisTemplate.opsForValue().increment(RedisKeyName.QUESTION_VIEW.getType()+":"+id);
+    }
 
+    public Integer countView(Long id){
+        Integer count=0;
+        String key=RedisKeyName.QUESTION_VIEW.getType() + ":" + id;
+        Boolean hasKey = redisTemplate.hasKey(key);
+        if (hasKey){
+            count= (Integer) redisTemplate.opsForValue().get(key);
+        }else {
+            redisTemplate.opsForValue().set(key,0L);
+        }
+        return  count;
     }
 
 }

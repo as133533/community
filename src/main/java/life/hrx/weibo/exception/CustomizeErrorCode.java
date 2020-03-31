@@ -22,7 +22,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     USERNAME_ERROR(2015,"用户名不存在"),
     USER_ERROR(2016,"你不能修改他人的密码"),
     PASSWORD_DIFFERENT(2017,"两次密码输入不一致"),
-    PHONE_NEVER_REGISTER(2018,"手机号从未注册")
+    PHONE_NEVER_REGISTER(2018,"手机号从未注册"),
+    LIKE_TYPE_WRONG(2019,"点赞类型错误")
     ;
 
     private String message;

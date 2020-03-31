@@ -1,7 +1,7 @@
 package life.hrx.weibo.controller;
 import life.hrx.weibo.security.auth.smscode.SmsCode;
 import life.hrx.weibo.dto.ResultDTO;
-import life.hrx.weibo.properties.AliSmsConfig;
+import life.hrx.weibo.config.AliSmsConfig;
 import life.hrx.weibo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;

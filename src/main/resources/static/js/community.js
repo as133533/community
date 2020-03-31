@@ -133,13 +133,64 @@ function showSelectTag(){
 }
 
 
-
+// 弹出气泡
 $(function () {
     $('#example').popover({
         html:true
     });
     }
 );
+
+
+function likeCount(e){
+    var id = e.getAttribute("data-id");
+    var type=e.getAttribute("type-id");
+    var isAuth=e.getAttribute("auth-id");
+
+    // anonymousUser这个为spring security在允许登录的页面下给予的默认用户，也就是说，点赞页面是所有人都可以访问的，所以${#authentication.isAuthenticated()}总是为true,只好以这种判断方式来判断用户是否登录
+    if (isAuth == "anonymousUser"){
+        var isAccepted=confirm("请先登录后再点赞哦！！");//confirm会弹出一个带消息的表单确认。如果点确定就返回true
+        if (isAccepted){
+            //这里还遗留一个暂时我难以解决的问题，我的目的是登录成功后可以跳转到点赞的网址，但是这个页面的跳转不是拦截性跳转，无法捕捉跳转前的路径，而我的登录是交给spring security的，也就是说，我在代码中正常登录就是跳转到首页
+            //要如何从后端获取非拦截性的前端地址呢。
+             location.href="/login";
+        }
+    }
+
+    $.ajax({
+        type:"POST",
+        url:"/likecount",
+        data: {
+            "id":id,
+            "type":type
+        },
+        success:function (json) {
+            if (json.code==200){
+                if (json.data.likeType == "question"){
+                    $("#question_like_count").text(json.data.likeCount);
+                    if (json.data.isLike){
+                        e.classList.add("active");
+                    }else {
+                        e.classList.remove("active");
+                    }
+                }else{
+                    $("#like_count").text(json.data.likeCount);
+                    if (json.data.isLike){
+                        e.classList.add("active");
+                    }else {
+                        e.classList.remove("active");
+                    }
+                }
+
+            }
+        },
+
+        error:function (e) {
+            console.log(e.responseText);
+        }
+
+    })
+}
 
 
 

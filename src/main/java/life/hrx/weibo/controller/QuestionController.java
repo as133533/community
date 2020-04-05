@@ -41,7 +41,8 @@ public class QuestionController {
     public String question(Model model, @PathVariable("id") Long id,Authentication authentication){
 
         MyUserDetails userDetails=null;
-        if (!StringUtils.equals(SecurityContextHolder.getContext().getAuthentication().getName(),"anonymousUser")){ //如果不是匿名用户，说明已经登录
+        if (SecurityContextHolder.getContext().getAuthentication()!=null &&
+                !StringUtils.equals(SecurityContextHolder.getContext().getAuthentication().getName(),"anonymousUser")){ //如果不是匿名用户，说明已经登录
             userDetails=(MyUserDetails)authentication.getPrincipal();
         }
 

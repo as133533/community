@@ -5,6 +5,7 @@ import life.hrx.weibo.service.NotificationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,7 +25,11 @@ public class MvcInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (!StringUtils.equals(SecurityContextHolder.getContext().getAuthentication().getName(),"anonymousUser")){//如果用户不是匿名用户
+
+
+        if ( SecurityContextHolder.getContext().getAuthentication()!=null &&
+                !StringUtils.equals(SecurityContextHolder.getContext().getAuthentication().getName(),"anonymousUser")){//如果用户不是匿名用户
+//        if (SecurityContextHolder.getContext().getAuthentication()!=null){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             MyUserDetails userDetails = (MyUserDetails)authentication.getPrincipal();
             Long unreadcount = notificationService.unreadcount(userDetails.getId());
@@ -32,6 +37,7 @@ public class MvcInterceptor implements HandlerInterceptor {
         }
         return true;
     }
+
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

@@ -36,10 +36,8 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             String url="/";
             if (savedRequest!=null){
                 url=savedRequest.getRedirectUrl(); //拿到重定向到登录页面前的地址
-                log.info(url);
 
             }
-            log.info(url);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(objectMapper.writeValueAsString(ResultDTO.okOf(url)));
 
